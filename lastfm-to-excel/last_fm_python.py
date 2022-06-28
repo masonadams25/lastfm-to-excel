@@ -16,17 +16,15 @@ print("Two: " + c_2.value)
 print("Three: " + c_3.value)
 '''
 
-def print_to_excel(artist, count):
+def print_to_excel(x, artist, count):
     path = "py_test.xlsx"
 
     wb = openpyxl.load_workbook(path)
 
     sheet = wb.active
 
-    for x in range(25):
-            (sheet.cell(row = x+1, column = 1)).value = f"{artist}"
-            (sheet.cell(row = x+1, column = 2)).value = f"{count}"
+    (sheet.cell(row = x+1, column = 1)).value = f"{artist}"
+    (sheet.cell(row = x+1, column = 2)).value = f"{count}"
 
     wb.save(path)
 
-print_to_excel("Mason", 10)
