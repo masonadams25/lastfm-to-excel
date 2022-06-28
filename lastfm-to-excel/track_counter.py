@@ -1,6 +1,3 @@
-"""
-Show 20 last played tracks
-"""
 import argparse
 import pylast
 
@@ -14,14 +11,6 @@ import time
 from write_to_excel import print_to_excel
 
 track_count ={}
-
-def get_recent_tracks(username, number, begin, end):   
-    recent_tracks = lastfm_network.get_user(username).get_recent_tracks(limit=number,time_from=begin, time_to=end)
-    for i, track in enumerate(recent_tracks):
-        printable = track_and_timestamp(track)
-        print(str(i + 1) + " " + str(printable))
-    return recent_tracks
-
 #returns as a named tuple with entries track, album, playback_date, and timestamp
 #acess by doing var.album
 def get_track_count(username, begin, end):  
@@ -36,20 +25,7 @@ def get_track_count(username, begin, end):
         #print(str(track.track) + " - " + str(track_count[track.track]))
     return track_count
 
-#returns a tuple of each track played in a week, but only once
-def get_weekly_chart(username, begin, end):
-    chart = lastfm_network.get_user(username).get_weekly_track_charts(from_date=begin, to_date=end)
-    count = 0
-    for i, track in enumerate(chart):
-        count = count + 1
-        printable = track
-        print(str(count) + " " + str(track))
-    return printable
-
-
-if __name__ == "__main__":
-
-    def track_counter(start_year, start_mon, start_day, end_year, end_mon, end_day):
+def track_counter(start_year, start_mon, start_day, end_year, end_mon, end_day):
     
         parser = argparse.ArgumentParser(
             description="Show 20 last played tracks",
@@ -59,7 +35,7 @@ if __name__ == "__main__":
         parser.add_argument(
             "-n",
             "--number",
-            default=500000,
+            default=2000,
             type=int,
             help="Number of tracks to show (when no artist given)",
         )
@@ -107,8 +83,8 @@ if __name__ == "__main__":
             sorted_tracks[w] = track_count[w]
 
         #prints out pairs of song and count
+        k = 0
         for key, value in reversed(sorted_tracks.items()):
-            print(key, ' : ', value)
-
-#track_counter(2022,4,1,2022,5,1)
-# End of file
+            k = k+1
+            #print(key, ' : ', value)
+            print_to_excel(k,key,value)
